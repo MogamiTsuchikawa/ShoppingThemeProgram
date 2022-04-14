@@ -22,9 +22,9 @@ while flag:
         item_counts[target_index] += 1
         print(f'{item_names[target_index]}を購入しました')
     if cmds[0] == 'checkout':
-        sum = 0
+        total = 0
         for i in range(len(item_names)):
-            sum += item_values[i] * item_counts[i]
+            total += item_values[i] * item_counts[i]
             print(f'{item_names[i]} {item_values[i]}円×{item_counts[i]}')
             item_counts[i] = 0
-        print(f'合計金額:{sum}円')
+        print(f'合計金額:{total}円')
