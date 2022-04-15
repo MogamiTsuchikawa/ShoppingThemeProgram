@@ -32,8 +32,9 @@ def CheckOut():
     print(f"合計金額:{GetSum()}円")
 
 items=[]
+
 while True:
-    cmd=input()
+    cmd=input("STP>")
     cmds=cmd.split(" ")
     if cmds[0]=="exit":
         break
