@@ -1,0 +1,157 @@
+from operator import ne
+import random
+
+class Item:
+    def __init__(self,name,value):
+        self.name=name
+        self.value=value
+        self.count=0
+    
+    def Buy(self):
+        self.count+=1
+    
+    def GetAmountOfMoney(self):
+        return self.value*self.count
+
+    def GetIntroTxt(self):
+        return f"{self.name}:{self.value}円"
+
+class Cart:
+    def __len__(self):
+        return len(self.items)
+    def __init__(self):
+        self.items=[]
+        self.item_names=[]
+        
+    def GetSum(self):
+        total=0
+        for item in self.items:
+            total+=item.GetAmountOfMoney()
+        return total
+
+    def AddItem(self,cmds):
+        if not cmds[2].isdecimal():
+            return "3つ目には価格を入れてください"
+        if cmds[1] in self.item_names:
+            return "既にその名前のアイテムが存在します"
+        name=cmds[1]
+        value=int(cmds[2])
+        newItem=Item(name,value)
+        self.item_names.append(name)
+        self.items.append(newItem)
+        return f"{value}円の{name}を登録しました"
+
+    def CheckOut(self):
+        ret=""
+        for item in self.items:
+            ret+=item.GetIntroTxt()+f"*{item.count}\n"
+        ret+=f"合計金額:{self.GetSum()}円"
+        return ret
+    
+    def Show(self):
+        if len(self.items)==0:
+            return "まだ何も登録していません"
+        ret=""
+        for i,item in enumerate(self.items):
+            ret+= f"{i}:{item.GetIntroTxt()}\n"
+        return ret
+
+    def Buy(self,cmd):
+        targetitem=self.SearchItem(cmd[1])
+        if targetitem==-1:
+            return "アイテムが見つかりませんでした"
+        targetitem.Buy()
+        return f"{targetitem.name}を一個購入しました"
+
+    def SearchItem(self,cmd):
+        for item in self.items:
+            if item.name==cmd:
+                return item
+        if cmd.isdecimal():
+            index=int(cmd)
+            if 0<=index<len(self.items):
+                return self.items[index]
+            else:
+                return -1
+        return -1
+
+
+item_name_box=[
+    "Python",
+    "CSharp",
+    "Swift",
+    "Kotlin",
+    "FORTRAN",
+    "Ruby",
+    "Rust",
+    "C",
+    "D",
+    "Go",
+    "Haskell",
+    "Java",
+    "JavaScript",
+    "Nim",
+    "Perl",
+    "PHP",
+    "Scala",
+    "Scratch",
+    "TypeScript",
+    "TeX"
+]
+
+
+
+
+def GetNewItem():
+    newitem=random.randrange(len(item_name_box))
+    number=str(cnt[newitem])
+    if number=="1":number=""
+    cnt[newitem]+=1
+    return item_name_box[newitem]+number
+SEED=1
+random.seed(SEED)
+cmd=[]
+ans=[]
+cnt=[1]*len(item_name_box)
+first_item=random.choice(item_name_box)
+first_item_value=str(random.randint(500,1500))
+print(first_item,first_item_value)
+mycart=Cart()
+mycart.AddItem([0,first_item,first_item_value])
+cmd.append(f"add {first_item} {first_item_value}")
+i=0
+while i<999:
+    rnd=random.randint(1,4)
+    if rnd==1:#add
+        item_name=GetNewItem()
+        item_value=str(random.randint(500,1500))
+        cmd.append(f"add {item_name} {item_value}")
+        mycart.AddItem([0,item_name,item_value])
+    elif rnd==2:#show
+        if cmd[-1]=="show":
+            continue
+        cmd.append("show")
+        ans.append(mycart.Show())
+        
+    elif rnd==3:#buy
+        buy_item=str(random.randrange(len(mycart)))
+        cmd.append(f"buy {buy_item}")
+    elif rnd==4:#checkout
+        if cmd[-1]=="checkout":
+            continue
+        cmd.append("checkout")
+        ans.append(mycart.CheckOut())
+    i+=1
+
+
+
+
+
+
+with open(f"./testcase/{SEED:04}_in.txt","w")as f:
+    for i in cmd:
+        f.write(i+["\n",""][i[-1]=="\n"])
+
+with open(f"./testcase/{SEED:04}_out.txt","w")as f:
+    for i in ans:
+        f.write(i+["\n",""][i[-1]=="\n"])
