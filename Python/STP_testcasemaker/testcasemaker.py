@@ -133,6 +133,7 @@ for SEED in range(100):
         elif rnd==3:#buy
             buy_item=str(random.randrange(len(mycart)))
             cmd.append(f"buy {buy_item}")
+            mycart.Buy(buy_item)
         elif rnd==4:#checkout
             if cmd[-1]=="checkout" or i==998:
                 continue
