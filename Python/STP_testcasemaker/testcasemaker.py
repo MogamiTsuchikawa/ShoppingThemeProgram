@@ -1,3 +1,4 @@
+import os
 import random
 
 class Item:
@@ -105,6 +106,9 @@ def GetNewItem():
     if number=="1":number=""
     cnt[newitem]+=1
     return item_name_box[newitem]+number
+
+os.makedirs("./testcase",exist_ok=True)
+
 for SEED in range(100):
     random.seed(SEED)
     cmd=[]
@@ -140,9 +144,12 @@ for SEED in range(100):
             cmd.append("checkout")
             ans.append(mycart.CheckOut())
         i+=1
+        
     cmd.append("checkout")
     ans.append(mycart.CheckOut())
     cmd.append("exit")
+
+
     with open(f"./testcase/{SEED:04}_in.txt","w")as f:
         for i in cmd:
             f.write(i+["\n",""][i[-1]=="\n"])
