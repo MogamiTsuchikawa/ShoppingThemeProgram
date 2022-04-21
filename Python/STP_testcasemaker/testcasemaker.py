@@ -46,6 +46,8 @@ class Cart:
         for i,item in enumerate(self.items):
             ret+=f"{i}:{item.GetIntroTxt()}*{item.count}\n"
         ret+=f"total:{self.GetSum()}yen"
+        for item in self.items:
+            item.count=0
         return ret
     
     def Show(self):
@@ -114,8 +116,10 @@ for SEED in range(50):
     cmd=[]
     ans=[]
     cnt=[1]*len(item_name_box)
-    first_item=random.choice(item_name_box)
+    first_item_num=random.randrange(len(item_name_box))
+    first_item=item_name_box[first_item_num]
     first_item_value=str(random.randint(500,1500))
+    cnt[first_item_num]+=1
 
     mycart=Cart()
     mycart.AddItem([0,first_item,first_item_value])
