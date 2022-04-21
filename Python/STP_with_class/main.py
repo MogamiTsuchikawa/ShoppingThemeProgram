@@ -29,6 +29,7 @@ def AddItem(cmds):
 def CheckOut():
     for item in items:
         print(item.GetIntroTxt()+f"*{item.count}")
+        item.count=0
     print(f"合計金額:{GetSum()}円")
 
 items=[]

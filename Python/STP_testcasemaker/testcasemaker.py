@@ -43,8 +43,8 @@ class Cart:
 
     def CheckOut(self):
         ret=""
-        for item in self.items:
-            ret+=item.GetIntroTxt()+f"*{item.count}\n"
+        for i,item in enumerate(self.items):
+            ret+=f"{i}:{item.GetIntroTxt()}*{item.count}\n"
         ret+=f"total:{self.GetSum()}yen"
         return ret
     
@@ -109,7 +109,7 @@ def GetNewItem():
 
 os.makedirs("./testcase",exist_ok=True)
 
-for SEED in range(100):
+for SEED in range(50):
     random.seed(SEED)
     cmd=[]
     ans=[]
@@ -120,9 +120,9 @@ for SEED in range(100):
     mycart=Cart()
     mycart.AddItem([0,first_item,first_item_value])
     cmd.append(f"add {first_item} {first_item_value}")
-    i=0
-    while i<999:
-        rnd=random.randint(1,4)
+    i=1
+    while i!=998:
+        rnd=random.randint(1,10)
         if rnd==1:#add
             item_name=GetNewItem()
             item_value=str(random.randint(500,1500))
@@ -133,18 +133,18 @@ for SEED in range(100):
                 continue
             cmd.append("show")
             ans.append(mycart.Show())
-
-        elif rnd==3:#buy
-            buy_item=str(random.randrange(len(mycart)))
-            cmd.append(f"buy {buy_item}")
-            mycart.Buy(buy_item)
-        elif rnd==4:#checkout
+        elif rnd==3:#checkout
             if cmd[-1]=="checkout" or i==998:
                 continue
             cmd.append("checkout")
             ans.append(mycart.CheckOut())
-        i+=1
+        elif 4<=rnd:#buy
+            buy_item=str(random.randrange(len(mycart)))
+            cmd.append(f"buy {buy_item}")
+            mycart.Buy([0,buy_item])
         
+        i+=1
+
     cmd.append("checkout")
     ans.append(mycart.CheckOut())
     cmd.append("exit")

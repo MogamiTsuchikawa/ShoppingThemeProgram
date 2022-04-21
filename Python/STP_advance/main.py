@@ -39,6 +39,7 @@ class Cart:
     def CheckOut(self):
         for item in self.items:
             print(item.GetIntroTxt()+f"*{item.count}")
+            item.count=0
         return f"合計金額:{self.GetSum()}円"
     
     def Show(self):
