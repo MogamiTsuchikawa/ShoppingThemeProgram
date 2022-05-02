@@ -22,7 +22,7 @@ class Program
                 case "show":
                     for (int i = 0; i < items.Count; i++)
                     {
-                        Console.WriteLine($"{i}:{items[i].GetIntroTxt()}円");
+                        Console.WriteLine($"{i}:{items[i].GetIntroTxt()}");
                     }
                     break;
                 case "buy":
